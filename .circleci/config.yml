@@ -82,7 +82,7 @@ jobs:
           command: |
              cd frontend
              npm install
-             npm run build
+             npm run test
       # Restore from cache
       - save_cache:
           paths: [frontend/node_modules]
@@ -103,7 +103,7 @@ jobs:
           command: |
              cd backend
              npm install
-             npm run build
+             npm run test
       # Restore from cache
       - save_cache:
           paths: [backend/node_modules]
