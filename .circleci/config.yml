@@ -194,7 +194,7 @@ jobs:
           command: |
             # Your code here
             aws ec2 describe-instances \
-            --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+            --query "Reservations[*].Instances[*].[PublicIpAddress]" \ 
             --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --output text >> ~/project/.circleci/ansible/inventory.txt
             cat ~/project/.circleci/ansible/inventory.txt
@@ -239,7 +239,7 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: circleci/node:13.8.0
+      - image: circleci/node:18.0.0
     steps:
       # Checkout code from git
       - checkout
@@ -251,7 +251,7 @@ jobs:
             # Your code here
             cd backend
             sudo npm install -g npm
-            npm run migrations >migrations_dump.txt
+            npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
           name: Send migration results to kvdb.io
