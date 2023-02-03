@@ -421,7 +421,7 @@ jobs:
             # your code here
             export BACKEND_IP=$(aws ec2 describe-instances \
             --query "Reservations[*].Instances[*].[PublicIpAddress]" \
-            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --filters "Name=tag:Name,Value=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --output test)
             echo ${BACKEND_IP}
 
@@ -449,7 +449,7 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
                 # Change this to 0 after the job fails
-              return 1
+              return 0
             else
               return 1
             fi
