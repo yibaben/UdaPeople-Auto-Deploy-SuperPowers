@@ -427,6 +427,10 @@ jobs:
               echo ${BACKEND_PUBLIC_IP}
               echo backend-${CIRCLE_WORKFLOW_ID:0:7}
               echo ${API_URL}
+            
+            echo "sleeping for 1 minute"
+            sleep 60
+            
             if curl -v $API_URL/api/status | grep "ok"
             then
               return 0
