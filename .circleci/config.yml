@@ -430,7 +430,7 @@ jobs:
             
             echo "sleeping for 1 minute"
             sleep 60
-            
+
             if curl -v $API_URL/api/status | grep "ok"
             then
               return 0
@@ -451,7 +451,7 @@ jobs:
               return 1
             fi
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment
+      - destroy-environment
       - revert-migrations
 
   cloudfront-update:
