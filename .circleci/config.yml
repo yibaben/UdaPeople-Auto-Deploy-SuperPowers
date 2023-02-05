@@ -1,35 +1,35 @@
 version: 2.1
 
 commands:
-  # install_ansible:
-  #   description: Install Ansible
-  #   steps:
-  #     - run:
-  #         name: Install Ansible
-  #         command: |
-  #           sudo apt update
-  #           sudo apt install software-properties-common -y
-  #           sudo add-apt-repository --yes --update ppa:ansible/ansible
-  #           sudo apt install ansible -y
+  install_ansible:
+    description: Install Ansible
+    steps:
+      - run:
+          name: Install Ansible
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
 
-  # install_awscli:
-  #   description: Install AWS cli
-  #   steps:
-  #     - run:
-  #         name: Install AWS cli
-  #         command: |
-  #           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  #           unzip awscliv2.zip
-  #           sudo ./aws/install
+  install_awscli:
+    description: Install AWS cli
+    steps:
+      - run:
+          name: Install AWS cli
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
 
-  # install_nodejs:
-  #   description: Install Node.js 13
-  #   steps:
-  #     - run:
-  #         name: Install Node.js 13
-  #         command: |
-  #           curl -fsSl https://deb.nodesource.com/setup_13.x | sudo -E bash -
-  #           sudo apt install -y nodejs
+  install_nodejs:
+    description: Install Node.js 13
+    steps:
+      - run:
+          name: Install Node.js 13
+          command: |
+            curl -fsSl https://deb.nodesource.com/setup_13.x | sudo -E bash -
+            sudo apt install -y nodejs
 
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -51,24 +51,24 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
-      # Add parameter here
+      # Add parameter here 
       workflow_id:
         default: "${CIRCLE_WORKFLOW_ID:0:7}"
-        type: string     
+        type: string
+    
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
           when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS=$(curl --insecure  https://kvdb.io/VbYn3VW5794E2W7GyBTEVb/migration_<< parameters.workflow_id >>)
-            if(( $SUCCESS==1 )); 
+            MIGRATION_ID="migration_<< parameters.workflow_id >>"
+            echo $MIGRATION_ID
+            SUCCESS=$(curl --insecure --request GET  "https://kvdb.io/VbYn3VW5794E2W7GyBTEVb/${MIGRATION_ID}")
+            if (( $SUCCESS == 1 )); 
             then
               cd ~/project/backend
               npm install
               npm run migrations:revert
-            #  Add revert code here. You can find this in the Getting Started section.
             fi
             
 jobs:
