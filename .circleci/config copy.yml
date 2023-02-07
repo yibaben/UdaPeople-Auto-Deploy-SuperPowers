@@ -192,24 +192,24 @@
     #             #  Add revert code here. You can find this in the Getting Started section.
     #             fi
 
-    cleanup:
-      docker:
-        - image: cimg/base: stable
-    steps:
-      - checkout
-      - install_awscli
-      - install_nodejs
-      - run:
-          name: Remove old stack and files
-          command: |
-            exports STACKS=($(aws cloudformation list-stacks \
-              --query "StackSummaries[*].StackName" \
-              --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
-            echo Stack names: "${STACKS[@]}"
-            export OldWorkflowID=$(curl --insecure https://kvdb.io/VbYn3VW5794E2W7GyBTEVb/old_workflow_id)
-            echo Old Workflow ID: $OldWorkflowID
+    # cleanup:
+    #   docker:
+    #     - image: cimg/base: stable
+    # steps:
+    #   - checkout
+    #   - install_awscli
+    #   - install_nodejs
+    #   - run:
+    #       name: Remove old stack and files
+    #       command: |
+    #         exports STACKS=($(aws cloudformation list-stacks \
+    #           --query "StackSummaries[*].StackName" \
+    #           --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
+    #         echo Stack names: "${STACKS[@]}"
+    #         export OldWorkflowID=$(curl --insecure https://kvdb.io/VbYn3VW5794E2W7GyBTEVb/old_workflow_id)
+    #         echo Old Workflow ID: $OldWorkflowID
 
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}"]]
+    #         if [[ "${STACKS[@]}" =~ "${OldWorkflowID}"]]
 
 
 #   cleanup:
