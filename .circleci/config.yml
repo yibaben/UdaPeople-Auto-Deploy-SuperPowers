@@ -474,7 +474,7 @@ jobs:
       - install_awscli
       - install_nodejs
       - run:
-          name: Remove old stack and files
+          name: Get old stack workflow Id
           command: |
             exports STACKS=$(aws cloudformation list-stacks \
               --query "StackSummaries[*].StackName" \
@@ -482,7 +482,11 @@ jobs:
             echo Stack names: "${STACKS[@]}"
             export OldWorkflowID=$(curl --insecure https://kvdb.io/VbYn3VW5794E2W7GyBTEVb/old_workflow_id)
             echo OldWorkflowID: ${OldWorkflowID}
-
+      - run:
+          name: Remove old stack and files
+          command: |
+            export OldWorkflowID=$(curl --insecure https://kvdb.io/VbYn3VW5794E2W7GyBTEVb/old_workflow_id)
+            echo OldWorkflowID: ${OldWorkflowID}
             # if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}"]]
             then
